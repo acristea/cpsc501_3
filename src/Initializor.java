@@ -1,12 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
-
 import org.jdom2.*;
-import org.jdom2.input.*;
-import org.jdom2.output.*;
+import org.jdom2.input.SAXBuilder;
 
 public class Initializor {
 
@@ -17,45 +13,63 @@ public class Initializor {
 		}
 		else {
 			if(args[0].equals("sender")) {
-				
+				Object outputObj = null;
 				System.out.println("========Sender Interface=========");
 				System.out.println("Please chose object to serialize : ");
 				printMenuObjects();
 				BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 				String message = in.readLine();
 				switch(Integer.parseInt(message)) {
-					case 1 :  
-						Person objPerson = new Person();
-					/*	Class newClass = Class.forName("Person");
-						Constructor c = newClass.getDeclaredConstructor(null);
-						Object obj = c.newInstance(null);
-						 SerDeser.serializeObject(obj);
-					*/ 
-						 Document doc =  ObjectCreator.initializePrimitiveObject(objPerson);
-						 MyXMLHandler.writeXML(doc, new FileOutputStream("output.xml"));
-						 break;
-					case 2 :
-						Kid objKid = new Kid();
-						Document doc1 = ObjectCreator.initializePrimitiveObject(objKid);
-						MyXMLHandler.writeXML(doc1, new FileOutputStream("output.xml"));
-						break;
-					case 3 :
-					case 4 :
-					case 5 : 	
+
+				case 1 :  
+					Person objPerson = new Person();
+					ObjectCreator.initializePrimitiveObject(objPerson);
+					outputObj = objPerson;
+					break;
+
+				case 2 :
+					Kid objKid = new Kid();
+					objKid.aKid = new Person();
+					ObjectCreator.initializePrimitiveObject(objKid.aKid);
+					outputObj = objKid;
+					break;
+
+				case 3 :
+					Years objYears = new Years();
+					outputObj = objYears;
+					break;
+				case 4 :
+					School objSchool = new School();
+					outputObj = objSchool;
+					break;
+
+				case 5 : 
+					City cityObject = new City();
+					outputObj = cityObject;
+					break;
 				}
-				
+				Document doc = SerDeser.serializeObject(outputObj);
+				MyXMLHandler.writeXML(doc, new FileOutputStream("output.xml"));
 				int port = Integer.parseInt(args[1]);
 				Sender objSender = new Sender(port);
 				objSender.sendFile("output.xml");
 			}
-			
+
 			else if (args[0].equals("receiver")) {
-				
+
 				String hostname = args[1];
 				int port = Integer.parseInt(args[2]);
 				Receiver objSender = new Receiver(port, hostname);
 				objSender.receiveFile("./input.xml");
-			}
+
+				SAXBuilder builder = new SAXBuilder(false);
+				Document doc = builder.build("input.xml");
+
+				Object objDeserialized = SerDeser.deserializeObject(doc);
+				Inspector objInspector = new Inspector();
+				objInspector.inspect(objDeserialized, true);
+				//XMLReader.XMLprint();
+			}	
 			else {
 				System.out.println("Please review your typed argumens");
 			}

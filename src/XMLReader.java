@@ -12,7 +12,7 @@ public class XMLReader {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String fileName = "App.xml";
+		String fileName = "input.xml";
 		
 		try
 		{
