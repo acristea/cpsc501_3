@@ -1,3 +1,14 @@
+/*********************************
+/ Author: Abbas Sarraf Shirazi
+/ Serializes, Deserializes a specific object through a network between a server and a client.
+/ CPSC 501 - Assignment 3
+/ --------------------------------
+/ Class: XMLReaderRecursive
+/ Class to be used to read recursively from a filename of type xml.
+ **********************************/ 
+
+
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,21 +20,17 @@ import org.jdom2.input.SAXBuilder;
 
 public class XMLReaderRecursive {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String fileName = "App.xml";
-		
+
+	public static void XMLprint(String fileName) {
+
 		try
 		{
 			SAXBuilder builder = new SAXBuilder(false);
 			// reading an XML file, creating the Document object containing all the elements along with attributes
 			Document doc = builder.build(fileName);  
-			
+
 			Element root = doc.getRootElement(); // getting the root element of a document
-			
+
 			recursive(root, 0); // recursive function to visit every element
 		}
 		catch(Exception e)
@@ -47,17 +54,17 @@ public class XMLReaderRecursive {
 		}
 
 		println("Printing Elements for " + curElement.getName() + "...", level);
-		
+
 		List<Element> childrenList = curElement.getChildren();		
 		Iterator<Element> i = childrenList.iterator();
-		
+
 		while ( i.hasNext() )
 		{
 			Element curEl = (Element) i.next();
 			recursive(curEl, level + 1); // before visiting the text, we do the recursion, what happens if we place this line at the end of the loop?
 			if ( curEl.getText().trim().length() > 0) // to avoid empty spaces/lines
 				println( "\tText in " + curEl.getName() + ": " + curEl.getText(), level+1);
-			
+
 		}
 	}
 

@@ -1,16 +1,17 @@
-/*******************
- * Adrian Cristea
- * CPSC 501 Assignment 1
- * Does reflection on a certain invoked object (obj)
- * Version 1.3
- *******************/
+/*********************************
+/ Author: Adrian Cristea
+/ Serializes, Deserializes a specific object through a network between a server and a client.
+/ CPSC 501 - Assignment 3
+/ --------------------------------
+/ Class: Inspector
+/ Does reflection on a certain invoked object (obj)
+ **********************************/ 
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 
 public class Inspector {
@@ -136,20 +137,26 @@ public class Inspector {
 		for(int i = 0; i < fieldObj.length; i++) {
 			fieldObj[i].setAccessible(true);
 
-			checkField(fieldObj[i], anObject);
+			if(anObject != null) {
+				System.out.println("FIELD : null");
+			}
+			else {
+				checkField(fieldObj[i], anObject);
 
-			//printing out type of the field 
-			Class typeObject = fieldObj[i].getType();
-			System.out.println("TYPE: " + typeObject.toString());
-			//printing out the modifiers of the field
-			int fieldModifiers = fieldObj[i].getModifiers();
-			System.out.println("MODIFIER: " + Modifier.toString(fieldObj[i].getModifiers()));
-			System.out.println("MODIFIERS: " + fieldModifiers);
+				//printing out type of the field 
+				Class typeObject = fieldObj[i].getType();
+				System.out.println("TYPE: " + typeObject.toString());
+				//printing out the modifiers of the field
+				int fieldModifiers = fieldObj[i].getModifiers();
+				System.out.println("MODIFIER: " + Modifier.toString(fieldObj[i].getModifiers()));
+				System.out.println("MODIFIERS: " + fieldModifiers);
+				System.out.println("FIELD VALUE: " + fieldObj[i].get(anObject));
+			}
 		}
 	}
 
 	//checks a field for possible arrays, primitive and non-primitives and prints them out 
-	public static Field checkField(Field fieldObj, Object anObject) throws Exception {
+	public static void checkField(Field fieldObj, Object anObject) throws Exception {
 		if(fieldObj.getType().isPrimitive())
 			//printing out FIELD NAME of the field
 			System.out.println("FIELD NAME: " + fieldObj.getName());
@@ -173,23 +180,21 @@ public class Inspector {
 			}
 
 		}		
-		return null;
+
 	}
 	//traverses the superclass(es) of a class and prints out accordingly
-	private static void traverseSuperClasses(Class cls) throws Exception
+	private static void traverseSuperClasses(Class cls)
 	{
+
 		System.out.println("Traversing superclass(es) for " + cls.getName());
 
-		while ( cls != null)
+		do
 		{
-			Class [] interfaces = cls.getInterfaces();
-			System.out.println(String.format("%s implements %s", cls.getSimpleName(), Arrays.toString(interfaces)));
-			int i = 0;
-			for(i = 0; i < interfaces.length; i++) {
-				//traverseSuperClasses(interfaces[i].getClass());
-			}
+			Class []interfaces = cls.getInterfaces();
+			// TODO: recursively print the superinterface(s) of each interface
+			System.out.println(String.format("%s implements %s", cls.getName(), Arrays.toString(interfaces)));
 			cls = cls.getSuperclass();
 
-		} 
+		} while ( cls != null);
 	}
 }

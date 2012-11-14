@@ -1,3 +1,12 @@
+/*********************************
+/ Author: Abbas Sarraf Shirazi
+/ Serializes, Deserializes a specific object through a network between a server and a client.
+/ CPSC 501 - Assignment 3
+/ --------------------------------
+/ Class: Sender
+/ Class to be used to start up the Sender to send a file.
+ **********************************/ 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -5,7 +14,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Sender {
 
@@ -24,19 +32,19 @@ public class Sender {
 		Socket clientSock = servsock.accept();
 
 		System.out.println("Connected to a client, " + clientSock.getInetAddress().toString());
-		
+
 		// reading file, storing it into a buffer
 		File myFile = new File(fileName);
 		byte[] buffer = new byte[(int) myFile.length()];
 		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(myFile));
 		bis.read(buffer, 0, buffer.length);
-		
+
 		// sending the file over network
 		OutputStream os = clientSock.getOutputStream();
 		os.write(buffer, 0, buffer.length);
 		os.flush();
 		clientSock.close();
-		
+
 		System.out.println("File " + fileName + " sent, connection closed!");
 
 	}

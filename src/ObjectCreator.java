@@ -1,9 +1,16 @@
+/*********************************
+/ Author: Adrian Cristea
+/ Serializes, Deserializes a specific object through a network between a server and a client.
+/ CPSC 501 - Assignment 3
+/ --------------------------------
+/ Class: ObjectCreator
+/ Class to be used to create pre-required functions before the serialization process of the final object
+ **********************************/ 
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 
-import org.jdom2.Document;
 
 public class ObjectCreator {
 
